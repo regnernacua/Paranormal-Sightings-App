@@ -1,0 +1,12 @@
+main {
+    display: flex;
+    margin: 0 4em;
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: clamp(1rem, 5.333vw, 2.5rem);
+    text-align: center;
+    font-weight: 200;
+    max-width: 500px;
+}

@@ -1,0 +1,43 @@
+.site-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    padding: 1.5em 1.5em 0 1.5em;
+}
+
+.site-title {
+    font-size: clamp(2rem, 8.333vw, 3.5rem);
+    font-family: "Frijole", serif;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    margin: 0;
+}
+
+.site-title-page {
+    font-size: clamp(.7rem, 4.999vw, 1.1rem);
+    font-family: "Frijole", serif;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    margin: 0 0 1em 0;
+}
+
+.site-title:hover, .site-title-page:hover {
+    text-decoration: none;
+    color: deepskyblue;
+}
+
+.site-title:focus, .site-title-page:focus {
+    background-color: white;
+    color: #222;
+}
+
+.site-title:active, .site-title-page:active {
+    color: deepskyblue;
+}
+
+.site-title-page .site-title {
+  font-size: 2rem;
+}
