@@ -110,3 +110,13 @@ nav ul {
     display: flex;
 }
 
+footer p{
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+footer {
+    padding: .4rem 0;
+    width: 100%;
+    color: #fff;
+}
