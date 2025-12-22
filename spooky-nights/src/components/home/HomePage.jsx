@@ -5,7 +5,7 @@ import './HomePage.css';
 
 export function HomePage() {
   return (
-    <>
+    <div className="page">
       <title>Spooky Nights</title>
       <TopHeader />
       <SiteHeader />
@@ -13,6 +13,6 @@ export function HomePage() {
         <h1 className="hero-title">The online home of paranormal sightings</h1>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

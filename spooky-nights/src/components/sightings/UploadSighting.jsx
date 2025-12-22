@@ -8,7 +8,7 @@ export function UploadSighting() {
   return (
     <>
       <TopHeader />
-      <SiteHeader />
+      <SiteHeader variant="page" />
       <main className="form-container" aria-labelledby="form-title">
         <h1 className="form-title" id="form-title">Add Sighting</h1>
 
@@ -57,7 +57,7 @@ export function UploadSighting() {
           </div>
         </form>
       </main>
-      <Footer />
+      <Footer showNews={false} />
     </>
   );
 }
