@@ -1,4 +1,5 @@
 import { getDBConnection } from '../db/db.js'
+import { randomUUID } from 'node:crypto'
 
 export async function getAllSightings(req, res) {
 
@@ -12,15 +13,24 @@ export async function getAllSightings(req, res) {
 }
 
 export async function createSighting(req, res) {
-  const { uuid, location, timeStamp, title, text } = req.body;
-  const db = await getAllSightingsDBConnection()
+  const { location, timeStamp, title, text } = req.body;
+
+  if (!location || !timeStamp || !title || !text) {
+    return res.status(400).json({message: 'All fields are required'})
+  }
+
+
+  const db = await getDBConnection()
+  const uuid = randomUUID()
 
   try {
     await db.run(
       `INSERT INTO sightings (uuid, location, timeStamp, title, text)
       VALUES (?, ?, ?, ?, ?)`,
       [uuid, location, timeStamp, title, text]
-    );
+    )
+
+    await db.close()
     res.status(201).json({ message: 'Sighting created'});
   } catch (error) {
     console.error('Error creating sighting:', error.message)

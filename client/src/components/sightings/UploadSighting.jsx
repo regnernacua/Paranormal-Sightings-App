@@ -2,9 +2,73 @@ import { Link } from 'react-router-dom';
 import { TopHeader } from "../header/TopHeader"
 import { SiteHeader } from "../header/SiteHeader"
 import { Footer } from "../footer/Footer"
+import { useState } from "react"
 import './UploadSighting.css'
 
 export function UploadSighting() {
+
+  const [form, setForm] = useState({
+    title: "",
+    details: "",
+    datetime: "",
+    location: ""
+  })
+
+  const [message, setMessage] = useState("")
+
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+
+    const { title, details, datetime, location  } = form
+
+    if (!title || !details || !datetime || !location) {
+      setMessage("Please complete all fields")
+      return
+    }
+
+    const date = new Date(datetime)
+    const readableDate = date.toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    })
+
+    const formData = {
+      title,
+      text: details,
+      timeStamp: readableDate,
+      location
+    }
+
+    try {
+      setMessage("")
+
+      const res = await fetch("/api/sightings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      })
+      if (res.ok) {
+        setMessage("Your sighting was uploaded — view it on the Sightings page.")
+        setForm({ title: "", details: "", datetime: "", location: "" })
+      } else {
+        setMessage("The server ghosted you. Please try again")
+      }
+    } catch (error) {
+      console.log(error)
+      setMessage("Something went wrong. Try again")
+    }
+  }
+
+
+
   return (
     <>
       <TopHeader />
@@ -12,14 +76,16 @@ export function UploadSighting() {
       <main className="form-container" aria-labelledby="form-title">
         <h1 className="form-title" id="form-title">Add Sighting</h1>
 
-        <form id="eventForm">
+        <form id="eventForm" onSubmit={handleSubmit}>
           <label htmlFor="title" className="lab-title">Title:</label>
           <input
             type="text"
             id="title"
             name="title"
-            placeholder="A ghostly encounter"
             className="input-title"
+            placeholder="A ghostly encounter"
+            value={form.title}
+            onChange={handleChange}
           />
 
           <label htmlFor="details" className="lab-details">Details:</label>
@@ -29,6 +95,8 @@ export function UploadSighting() {
             rows="5"
             placeholder="I was trying to get to sleep when..."
             className="input-details"
+            value={form.details}
+            onChange={handleChange}
           />
 
           <label htmlFor="datetime" className="lab-date-time">Time/Date:</label>
@@ -37,6 +105,8 @@ export function UploadSighting() {
             id="datetime"
             name="datetime"
             className="input-date-time"
+            value={form.datetime}
+            onChange={handleChange}
           />
 
           <label htmlFor="location" className="lab-location">Location:</label>
@@ -46,13 +116,15 @@ export function UploadSighting() {
             name="location"
             placeholder="London, UK"
             className="input-location"
+            value={form.location}
+            onChange={handleChange}
           />
 
           <button type="submit" className="submit-btn">Submit</button>
 
           <div className="form-message">
             <p className="form-message-text">
-              All sightings will be published on our <Link to="/sightings">sightings</Link> page.
+              {message || <>All sightings will be published on our <Link to="/sightings">sightings</Link> page.</>}
             </p>
           </div>
         </form>
