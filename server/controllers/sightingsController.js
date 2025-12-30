@@ -1,3 +1,4 @@
+import { sanitizeInput } from '../utils/santizeInput.js';
 import { getDBConnection } from '../db/db.js'
 import { randomUUID } from 'node:crypto'
 
@@ -13,7 +14,9 @@ export async function getAllSightings(req, res) {
 }
 
 export async function createSighting(req, res) {
-  const { location, timeStamp, title, text } = req.body;
+  const sanitized = sanitizeInput(req.body)
+
+  const { location, timeStamp, title, text } = sanitized;
 
   if (!location || !timeStamp || !title || !text) {
     return res.status(400).json({message: 'All fields are required'})
