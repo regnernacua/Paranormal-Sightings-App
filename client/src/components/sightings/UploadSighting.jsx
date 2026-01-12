@@ -14,7 +14,7 @@ export function UploadSighting() {
     location: ""
   })
 
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState(null)
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -23,7 +23,7 @@ export function UploadSighting() {
   async function handleSubmit(e) {
     e.preventDefault()
 
-    const { title, details, datetime, location  } = form
+    const { title, details, datetime, location } = form
 
     if (!title || !details || !datetime || !location) {
       setMessage("Please complete all fields")
@@ -48,7 +48,7 @@ export function UploadSighting() {
     }
 
     try {
-      setMessage("")
+      setMessage(null)
 
       const res = await fetch("/api/sightings", {
         method: "POST",
@@ -56,8 +56,18 @@ export function UploadSighting() {
         body: JSON.stringify(formData)
       })
       if (res.ok) {
-        setMessage("Your sighting was uploaded — view it on the Sightings page.")
-        setForm({ title: "", details: "", datetime: "", location: "" })
+        setMessage(
+          <>
+            Your sighting was uploaded. View it{" "}
+            <Link to="/sightings">here</Link>
+          </>
+        )
+        setForm({ 
+          title: "", 
+          details: "", 
+          datetime: "", 
+          location: "" 
+        })
       } else {
         setMessage("The server ghosted you. Please try again")
       }
