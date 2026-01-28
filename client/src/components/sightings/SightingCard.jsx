@@ -1,40 +1,40 @@
-import { useState } from "react";
-import "./SightingCard.css";
+import { useState } from "react"
+import "./SightingCard.css"
 
 export function SightingCard({ sighting, onUpdate, onDelete }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
   // Inline editing
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(sighting.title);
-  const [editedText, setEditedText] = useState(sighting.text);
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedTitle, setEditedTitle] = useState(sighting.title)
+  const [editedText, setEditedText] = useState(sighting.text)
 
   // Inline delete confirm
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   function startEditing() {
-    setEditedTitle(sighting.title);
-    setEditedText(sighting.text);
-    setIsEditing(true);
+    setEditedTitle(sighting.title)
+    setEditedText(sighting.text)
+    setIsEditing(true)
   }
 
   async function handleSave() {
-    if (!editedTitle.trim() || !editedText.trim()) return;
+    if (!editedTitle.trim() || !editedText.trim()) return
 
     await onUpdate(sighting._id, {
       title: editedTitle,
       text: editedText,
       location: sighting.location,
       timeStamp: sighting.timeStamp
-    });
+    })
 
-    setIsEditing(false);
+    setIsEditing(false)
   }
 
   function handleCancel() {
-    setEditedTitle(sighting.title);
-    setEditedText(sighting.text);
-    setIsEditing(false);
+    setEditedTitle(sighting.title)
+    setEditedText(sighting.text)
+    setIsEditing(false)
   }
 
   function formatDate(dateString) {
@@ -51,6 +51,7 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
 
   return (
     <article className={`sighting-card ${expanded ? "expanded" : ""}`}>
+
       <p className="card-details">
         {formatDate(sighting.timeStamp)}, {sighting.location}
       </p>
@@ -89,6 +90,7 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
       )}
 
       <div className="card-actions">
+
         {isEditing ? (
           <>
             <button className="save-btn" onClick={handleSave}>Save</button>
@@ -96,8 +98,11 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
           </>
         ) : (
           <>
-            <button className="edit-btn" onClick={startEditing}>Edit</button>
+            <button className="edit-btn" onClick={startEditing}>
+              Edit
+            </button>
 
+            {/* delete confirm UI */}
             {!confirmDelete && (
               <button
                 className="delete-btn"
@@ -110,15 +115,17 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
             {confirmDelete && (
               <div className="confirm-box">
                 <p>Delete this story permanently?</p>
+
                 <button
                   className="save-btn"
                   onClick={async () => {
-                    await onDelete(sighting._id);
-                    setConfirmDelete(false);
+                    await onDelete(sighting._id)
+                    setConfirmDelete(false)
                   }}
                 >
                   Yes, delete
                 </button>
+
                 <button
                   className="cancel-btn"
                   onClick={() => setConfirmDelete(false)}
@@ -129,7 +136,8 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
             )}
           </>
         )}
+
       </div>
     </article>
-  );
+  )
 }
