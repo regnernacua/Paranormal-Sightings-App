@@ -1,15 +1,26 @@
-import express from 'express'
-import { sightingsRouter } from './routes/sightings.js'
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import { sightingsRouter } from './routes/sightings.js';
 
-const app = express()
-const PORT = 7000
+dotenv.config();
 
-app.use(express.json())
+const app = express();
+const PORT = 7000;
 
-app.use('/api/sightings', sightingsRouter)
+app.use(express.json());
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+  });
+
+app.use('/api/sightings', sightingsRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`)
-}).on('error', (error) => {
-  console.error('Failed to start server:', error)
-})
+  console.log(`Server running at http://localhost:${PORT}`);
+});

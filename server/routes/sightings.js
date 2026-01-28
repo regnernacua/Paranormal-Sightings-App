@@ -10,5 +10,5 @@ export const sightingsRouter = express.Router()
 
 sightingsRouter.get('/', getAllSightings)
 sightingsRouter.post('/', createSighting)
-sightingsRouter.put('/:uuid', updateSighting)
-sightingsRouter.delete('/:uuid', deleteSighting)
+sightingsRouter.put('/:id', updateSighting)
+sightingsRouter.delete('/:id', deleteSighting)

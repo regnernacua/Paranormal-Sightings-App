@@ -16,19 +16,19 @@ export function SightingsPage() {
       .catch(console.error);
   }, []);
 
-  async function handleDelete(uuid) {
-    console.log("Deleting:", uuid)
+  async function handleDelete(id) {
+    console.log("Deleting:", id)
     try {
-      await fetch(`/api/sightings/${uuid}`, {method: "DELETE" })
-      setSightings(prev => prev.filter(s => s.uuid !== uuid))
+      await fetch(`/api/sightings/${id}`, {method: "DELETE" })
+      setSightings(prev => prev.filter(s => s._id !== id))
     } catch (error) {
       console.error("Failed to delete sighting", error)
     }
   }
 
-  async function handleUpdate(uuid, updates) {
+  async function handleUpdate(id, updates) {
     try {
-      const res = await fetch(`/api/sightings/${uuid}`, {
+      const res = await fetch(`/api/sightings/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(updates)
@@ -36,7 +36,7 @@ export function SightingsPage() {
       const updated = await res.json()
 
       setSightings(prev => 
-        prev.map(s => (s.uuid === uuid ? updated : s))
+        prev.map(s => (s._id === id ? updated : s))
       )
     } catch (error) {
       console.error("Failed to update sighting", error)
@@ -53,7 +53,7 @@ export function SightingsPage() {
         <div className="cards-container">
           {sightings.map(sighting => (
             <SightingCard 
-              key={sighting.uuid}
+              key={sighting._id}
               sighting={sighting}
               onDelete={handleDelete}
               onUpdate={handleUpdate}

@@ -31,19 +31,11 @@ export function UploadSighting() {
     }
 
     const date = new Date(datetime)
-    const readableDate = date.toLocaleDateString("en-GB", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    })
 
     const formData = {
       title,
       text: details,
-      timeStamp: readableDate,
+      timeStamp: date,
       location
     }
 
@@ -76,8 +68,6 @@ export function UploadSighting() {
       setMessage("Something went wrong. Try again")
     }
   }
-
-
 
   return (
     <>

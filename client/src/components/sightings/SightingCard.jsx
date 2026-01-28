@@ -12,12 +12,20 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
   // Inline delete confirm
   const [confirmDelete, setConfirmDelete] = useState(false)
 
+  function startEditing() {
+    setEditedTitle(sighting.title)
+    setEditedText(sighting.text)
+    setIsEditing(true)
+  }
+
   async function handleSave() {
     if (!editedTitle.trim() || !editedText.trim()) return
 
-    await onUpdate(sighting.uuid, {
+    await onUpdate(sighting._id, {
       title: editedTitle,
       text: editedText,
+      location: sighting.location,
+      timeStamp: sighting.timeStamp
     })
 
     setIsEditing(false)
@@ -78,7 +86,7 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
           </>
         ) : (
           <>
-            <button className="edit-btn" onClick={() => setIsEditing(true)}>
+            <button className="edit-btn" onClick={startEditing}>
               Edit
             </button>
 
@@ -99,7 +107,7 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
                 <button
                   className="save-btn"
                   onClick={async () => {
-                    await onDelete(sighting.uuid)
+                    await onDelete(sighting._id)
                     setConfirmDelete(false)
                   }}
                 >
