@@ -37,11 +37,23 @@ export function SightingCard({ sighting, onUpdate, onDelete }) {
     setIsEditing(false)
   }
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  }
+
   return (
     <article className={`sighting-card ${expanded ? "expanded" : ""}`}>
 
       <p className="card-details">
-        {sighting.timeStamp}, {sighting.location}
+        {formatDate(sighting.timeStamp)}, {sighting.location}
       </p>
 
       {isEditing ? (
