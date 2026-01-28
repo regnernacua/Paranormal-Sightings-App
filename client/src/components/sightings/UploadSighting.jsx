@@ -3,10 +3,10 @@ import { TopHeader } from "../header/TopHeader"
 import { SiteHeader } from "../header/SiteHeader"
 import { Footer } from "../footer/Footer"
 import { useState } from "react"
+import Parse from '../../parseConfig';
 import './UploadSighting.css'
 
 export function UploadSighting() {
-
   const [form, setForm] = useState({
     title: "",
     details: "",
@@ -30,42 +30,32 @@ export function UploadSighting() {
       return
     }
 
-    const date = new Date(datetime)
+    const date = new Date(datetime);
 
-    const formData = {
-      title,
-      text: details,
-      timeStamp: date,
-      location
-    }
+    const Sighting = Parse.Object.extend("Sighting")
+    const sighting = new Sighting();
+
+    sighting.set("title", title);
+    sighting.set("text", details);
+    sighting.set("timeStamp", date);
+    sighting.set("location", location)
 
     try {
-      setMessage(null)
-
-      const res = await fetch("/api/sightings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      })
-      if (res.ok) {
-        setMessage(
-          <>
-            Your sighting was uploaded. View it{" "}
-            <Link to="/sightings">here</Link>
-          </>
-        )
-        setForm({ 
-          title: "", 
-          details: "", 
-          datetime: "", 
-          location: "" 
-        })
-      } else {
-        setMessage("The server ghosted you. Please try again")
-      }
+      await sighting.save();
+      setMessage(
+        <>
+          Your sighting was uploaded. View it{" "}
+          <Link to="/sightings">here</Link>
+        </>
+      );
+      setForm({
+        title: "", 
+        details: "", 
+        datetime: "", 
+        location: ""})
     } catch (error) {
-      console.log(error)
-      setMessage("Something went wrong. Try again")
+      console.error(error)
+      setMessage("Something went wrong. Please try again")
     }
   }
 
