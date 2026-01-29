@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { TopHeader } from "../header/TopHeader"
 import { SiteHeader } from "../header/SiteHeader"
 import { Footer } from "../footer/Footer"
+import { createSighting } from '../../services/api';
 import { useState } from "react"
 import './UploadSighting.css'
 
@@ -42,30 +43,22 @@ export function UploadSighting() {
     try {
       setMessage(null)
 
-      const res = await fetch("/api/sightings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+      await createSighting(formData)
+      setMessage(
+        <>
+          Your sighting was uploaded. View it{" "}
+          <Link to="/sightings">here</Link>
+        </>
+      );
+      setForm({ 
+        title: "", 
+        details: "", 
+        datetime: "", 
+        location: "" 
       })
-      if (res.ok) {
-        setMessage(
-          <>
-            Your sighting was uploaded. View it{" "}
-            <Link to="/sightings">here</Link>
-          </>
-        )
-        setForm({ 
-          title: "", 
-          details: "", 
-          datetime: "", 
-          location: "" 
-        })
-      } else {
-        setMessage("The server ghosted you. Please try again")
-      }
     } catch (error) {
-      console.log(error)
-      setMessage("Something went wrong. Try again")
+      console.error("Error uploading sighting", error)
+      setMessage("Something went wrong. Please try again");
     }
   }
 

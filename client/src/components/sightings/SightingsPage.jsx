@@ -2,6 +2,7 @@ import { TopHeader } from "../header/TopHeader"
 import { SiteHeader } from "../header/SiteHeader"
 import { Footer } from "../footer/Footer"
 import { SightingCard } from "./SightingCard"
+import { getSightings, updateSighting, deleteSighting } from "../../services/api"
 import { useState, useEffect } from "react"
 import './SightingsPage.css'
 
@@ -10,17 +11,15 @@ export function SightingsPage() {
   const [sightings, setSightings] = useState([])
 
   useEffect(() => {
-    fetch("/api/sightings")
-      .then(res => res.json())
-      .then(data => setSightings(data))
+    getSightings()
+      .then(setSightings)
       .catch(console.error);
   }, []);
 
   async function handleDelete(id) {
-    console.log("Deleting:", id)
     try {
-      await fetch(`/api/sightings/${id}`, {method: "DELETE" })
-      setSightings(prev => prev.filter(s => s._id !== id))
+      await deleteSighting(id);
+      setSightings(prev => prev.filter(s => s._id !== id));
     } catch (error) {
       console.error("Failed to delete sighting", error)
     }
@@ -28,13 +27,7 @@ export function SightingsPage() {
 
   async function handleUpdate(id, updates) {
     try {
-      const res = await fetch(`/api/sightings/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify(updates)
-      })
-      const updated = await res.json()
-
+      const updated = await updateSighting(id, updates);
       setSightings(prev => 
         prev.map(s => (s._id === id ? updated : s))
       )

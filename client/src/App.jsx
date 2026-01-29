@@ -5,6 +5,8 @@ import './App.css'
 import { UploadSighting } from './components/sightings/UploadSighting';
 import { NewsPage } from './components/news/NewsPage';
 
+
+
 function App() {
 
   return (
@@ -16,5 +18,6 @@ function App() {
     </Routes>
   )
 }
+
 
 export default App
