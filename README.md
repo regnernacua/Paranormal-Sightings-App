@@ -10,7 +10,7 @@
 
 ## Live Demo
 
-🔗 **Live preview:** https://paranormal-sightings-two.vercel.app/
+🔗 **Live preview:** https://paranormal-sightings-frontend.vercel.app
 
 
 ## Snapshot
@@ -26,7 +26,7 @@ Here are the main technologies used in this project:
 * **JavaScript (ES6+)** – App logic
 * **CSS** – Styling 
 * **Node / Express / API backend** 
-* **Database (SQLite)**
+* **Database (MongoDB)**
 
 
 ## Installation
