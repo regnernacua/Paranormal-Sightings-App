@@ -10,7 +10,7 @@
 
 ## Live Demo
 
-🔗 **Live preview:** https://paranormal-sightings-frontend.vercel.app
+🔗 **Live preview:** https://paranormal-sightings-frontend.vercel.app/
 
 
 ## Snapshot
